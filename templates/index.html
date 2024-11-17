@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Monitor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Website Status Monitor</h1>
+        <a href="{{ url_for('logout') }}">Logout</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>Website URL</th>
+                    <th>Status</th>
+                    <th>Last Checked</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for website in websites %}
+                <tr>
+                    <td>{{ website.url }}</td>
+                    <td>{{ "Online" if website.status else "Offline" }}</td>
+                    <td>{{ website.timestamp }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <form id="addWebsiteForm">
+            <input type="text" id="url" placeholder="Enter Website URL" required>
+            <button type="submit">Add Website</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById("addWebsiteForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            var url = document.getElementById("url").value;
+            fetch('/add_website', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ url: url })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                location.reload();
+            });
+        });
+    </script>
+</body>
+</html>
