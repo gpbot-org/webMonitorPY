@@ -1,2 +1,2 @@
 # webMonitorPY
-a sdimple uptime robot / web monitor for website monitoring via python
+a simple uptime robot / web monitor for website monitoring via python
